@@ -71,7 +71,7 @@
             const values = []
             while (stmt2.step()) {
                 const val = stmt2.getAsObject()
-                times.push(val.date)
+                times.push(new Date(val.date))
                 values.push(val.value)
             }
             traces.push({
@@ -80,7 +80,8 @@
                 name: gym,
                 x: times,
                 y: values,
-                line: {color: colorForName(gym)}
+                line: {color: colorForName(gym)},
+                hovertemplate: '%{y:.2f}'
             })
         })
         return traces
@@ -96,14 +97,12 @@
             title: 'Absolute checkins',
             xaxis: {
                 rangeselector: selectorOptions,
-                rangeslider: {}
             },
         })
         Plotly.newPlot('graph2', collectTract(db, gyms, 'usage'), {
             title: 'Prozentuale auslastung',
             xaxis: {
                 rangeselector: selectorOptions,
-                rangeslider: {}
             },
         })
     })()
