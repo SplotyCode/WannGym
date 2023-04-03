@@ -14,7 +14,7 @@ repositories {
 
 dependencies {
     implementation("org.json:json:20230227")
-    implementation("org.xerial:sqlite-jdbc:3.39.3.0")
+    implementation("org.xerial:sqlite-jdbc:3.40.1.0")
 }
 
 tasks.withType<KotlinCompile> {

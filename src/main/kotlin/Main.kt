@@ -4,7 +4,7 @@ import java.text.NumberFormat
 
 const val API = "https://www.fitnessfirst.de/club/api/checkins/";
 
-fun main(args: Array<String>) {
+fun main() {
     val studios = linkedMapOf(
         "Westend" to "frankfurt9",
         "Eckenheim" to "frankfurt3",
@@ -14,6 +14,8 @@ fun main(args: Array<String>) {
         "Eschenheimer Turm" to "frankfurt7",
         "Sachsenhausen" to "frankfurt4"
     )
+    val store = Store()
+    store.connect("database.db")
 
     studios.forEach { (name, identifier) ->
         val response = JSONObject(URL("$API$identifier").readText()).getJSONObject("data")
@@ -22,5 +24,6 @@ fun main(args: Array<String>) {
         val usage = current / allowed.toDouble();
         val percentage = NumberFormat.getPercentInstance().format(usage)
         println("$name: $current/$allowed $percentage")
+        store.storeInfo(name, current, allowed, usage)
     }
 }
