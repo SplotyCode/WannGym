@@ -1,4 +1,4 @@
-name: Java CI with Gradle
+name: Fetch studio usage
 
 on: [workflow_dispatch]
   #schedule:
