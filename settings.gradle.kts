@@ -1,3 +1,3 @@
 
-rootProject.name = "WannGym"
+rootProject.name = "wann-gym"
 
