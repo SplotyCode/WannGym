@@ -37,7 +37,7 @@ publishing {
     repositories {
         maven {
             name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/SplotyCode/WannGym")
+            url = uri("https://maven.pkg.github.com/SplotyCode/wann-gym")
             credentials {
                 username = project.findProperty("gpr.user") as String? ?: System.getenv("GITHUB_ACTOR")
                 password = project.findProperty("gpr.key") as String? ?: System.getenv("GITHUB_TOKEN")
@@ -47,7 +47,7 @@ publishing {
     publications {
         register<MavenPublication>("gpr") {
             from(components["java"])
-            artifact ("build/libs/WannGym-$version-all.jar") {
+            artifact ("build/libs/wann-gym-$version-all.jar") {
                 classifier = "fat"
                 extension  = "jar"
             }
