@@ -13,11 +13,8 @@ repositories {
 }
 
 dependencies {
-    testImplementation(kotlin("test"))
-}
-
-tasks.test {
-    useJUnitPlatform()
+    implementation("org.json:json:20230227")
+    implementation("org.xerial:sqlite-jdbc:3.39.3.0")
 }
 
 tasks.withType<KotlinCompile> {
