@@ -1,0 +1,58 @@
+<script src="frontend/sql.js"></script>
+<script src="https://cdn.plot.ly/plotly-2.20.0.min.js"></script>
+<script>
+    function colorForName(name) {
+        const seed = name.charCodeAt(1)
+        const x = Math.sin(seed) * 10000
+        const random = x - Math.floor(x)
+        return '#' + (random * 0xFFFFFF << 0).toString(16).padStart(6, '0')
+    }
+
+    function collectGyms(db) {
+        const stmt = db.prepare("SELECT DISTINCT gym FROM usage")
+        const gyms = []
+        while (stmt.step()) {
+            gyms.push(stmt.getAsObject().gym)
+        }
+        return gyms
+    }
+
+    function collectTract(db, gyms, column) {
+        const traces = []
+        gyms.forEach(gym => {
+            const stmt2 = db.prepare('SELECT date, ' + column + ' as value FROM usage where gym = "' + gym + '"')
+            const times = []
+            const values = []
+            while (stmt2.step()) {
+                const val = stmt2.getAsObject()
+                times.push(val.date)
+                values.push(val.value)
+            }
+            traces.push({
+                type: "scatter",
+                mode: "lines",
+                name: gym,
+                x: times,
+                y: values,
+                line: {color: colorForName(gym)}
+            })
+        })
+        return traces
+    }
+
+    (async function start() {
+        const sqlPromise = initSqlJs({})
+        const dataPromise = fetch("database.db").then(res => res.arrayBuffer())
+        const [SQL, buf] = await Promise.all([sqlPromise, dataPromise])
+        const db = new SQL.Database(new Uint8Array(buf))
+        const gyms = collectGyms(db)
+        Plotly.newPlot('graph', collectTract(db, gyms, 'current'), {
+            title: 'FitnissFirst auslastung',
+        })
+        Plotly.newPlot('graph2', collectTract(db, gyms, 'usage'), {
+            title: 'FitnissFirst auslastung',
+        })
+    })()
+</script>
+<div id="graph"></div>
+<div id="graph2"></div>
