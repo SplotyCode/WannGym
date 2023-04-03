@@ -17,6 +17,52 @@
         return gyms
     }
 
+    const selectorOptions = {
+        buttons: [{
+            step: 'hour',
+            stepmode: 'backward',
+            count: 3,
+            label: '3h'
+        }, {
+            step: 'hour',
+            stepmode: 'backward',
+            count: 8,
+            label: '8h'
+        }, {
+            step: 'day',
+            stepmode: 'backward',
+            count: 1,
+            label: '1d'
+        }, {
+            step: 'day',
+            stepmode: 'backward',
+            count: 7,
+            label: '7d'
+        }, {
+            step: 'month',
+            stepmode: 'backward',
+            count: 1,
+            label: '1m'
+        }, {
+            step: 'month',
+            stepmode: 'backward',
+            count: 6,
+            label: '6m'
+        }, {
+            step: 'year',
+            stepmode: 'todate',
+            count: 1,
+            label: 'YTD'
+        }, {
+            step: 'year',
+            stepmode: 'backward',
+            count: 1,
+            label: '1y'
+        }, {
+            step: 'all',
+        }],
+    }
+
     function collectTract(db, gyms, column) {
         const traces = []
         gyms.forEach(gym => {
@@ -47,12 +93,22 @@
         const db = new SQL.Database(new Uint8Array(buf))
         const gyms = collectGyms(db)
         Plotly.newPlot('graph', collectTract(db, gyms, 'current'), {
-            title: 'FitnissFirst auslastung',
+            title: 'Absolute checkins',
+            xaxis: {
+                rangeselector: selectorOptions,
+                rangeslider: {}
+            },
         })
         Plotly.newPlot('graph2', collectTract(db, gyms, 'usage'), {
-            title: 'FitnissFirst auslastung',
+            title: 'Prozentuale auslastung',
+            xaxis: {
+                rangeselector: selectorOptions,
+                rangeslider: {}
+            },
         })
     })()
+
 </script>
+<h1>FitnessFirst Auslastung</h1>
 <div id="graph"></div>
 <div id="graph2"></div>
